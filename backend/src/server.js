@@ -4,11 +4,13 @@ const express = require("express");
 const cors = require("cors");
 
 const connectDB = require("./config/db");
+const chatRoutes = require("./routes/chat");
 
 const app = express();
 //middlewares before route-handlers
 app.use(cors());
 app.use(express.json());//stores parsed json in req.body
+app.use("/chat", chatRoutes);
 app.get("/health", (req, res) => res.json({ ok: true }));
 app.post("/echo", (req, res) => {
     res.json({
