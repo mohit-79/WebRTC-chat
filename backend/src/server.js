@@ -3,9 +3,12 @@ require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
 
+const connectDB = require("./config/db");
+
 const app = express();
+//middlewares before route-handlers
 app.use(cors());
-app.use(express.json());
+app.use(express.json());//stores parsed json in req.body
 app.get("/health", (req, res) => res.json({ ok: true }));
 app.post("/echo", (req, res) => {
     res.json({
@@ -14,6 +17,13 @@ app.post("/echo", (req, res) => {
 });
 
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`Server on ${PORT}`));
+// app.listen(PORT, () => console.log(`Server on ${PORT}`)); //before mongo
 
-console.log(process.env.PORT + "HELLO");
+connectDB().then(() => {
+    app.listen(PORT, () => {
+        console.log(`Server on ${PORT}`);
+    });
+});
+//after mongo
+
+// console.log(process.env.PORT + "HELLO");
