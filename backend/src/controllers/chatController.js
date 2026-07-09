@@ -42,7 +42,6 @@ const getMessages = async (req, res) => {
         const messages = await Message.find(query)
         .sort({ _id: -1 })
         .limit(limit);
-
         res.json(messages);
 
     } catch (err) {
