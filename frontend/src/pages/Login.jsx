@@ -1,5 +1,5 @@
-function Login() {
-    return <h1>Login Page</h1>;
-}
+import { SignIn } from "@clerk/clerk-react";
 
-export default Login;
+export default function Login() {
+    return <SignIn />;
+}
