@@ -7,9 +7,12 @@ const connectDB = require("./config/db");
 const chatRoutes = require("./routes/chat");
 
 const app = express();
+const { clerkMiddleware } = require("./middleware/clerkAuth");
+
 //middlewares before route-handlers
 app.use(cors());
 app.use(express.json());//stores parsed json in req.body
+app.use(clerkMiddleware());
 app.use("/chat", chatRoutes);
 app.get("/health", (req, res) => res.json({ ok: true }));
 app.post("/echo", (req, res) => {
@@ -27,5 +30,6 @@ connectDB().then(() => {
     });
 });
 //after mongo
+
 
 // console.log(process.env.PORT + "HELLO");

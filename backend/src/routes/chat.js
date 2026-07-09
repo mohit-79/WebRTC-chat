@@ -6,9 +6,13 @@ const {
     createMessage,
     getMessages
 } = require("../controllers/chatController");
+const {
+    requireAuth
+} = require("../middleware/clerkAuth");
 
-router.post("/", createMessage);
+// router.post("/", createMessage); //before clerk
+router.get("/:room", requireAuth(), getMessages);
+router.post("/", requireAuth(), createMessage);
 
-router.get("/:room", getMessages);
 
 module.exports = router;

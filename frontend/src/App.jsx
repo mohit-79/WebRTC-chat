@@ -5,6 +5,8 @@ import Login from "./pages/Login";
 import NotFound from "./pages/NotFound";
 
 import Chat from "./pages/Chat";
+import ProtectedRoute from "./components/ProtectedRoute";
+
 
 
 
@@ -17,7 +19,7 @@ function App() {
 
                 <Route path="/login" element={<Login />} />
 
-                <Route path="/chat" element={<Chat />} />
+                <Route path="/chat" element={<ProtectedRoute><Chat /></ProtectedRoute>} />
 
                 <Route path="*" element={<NotFound />} />
 
