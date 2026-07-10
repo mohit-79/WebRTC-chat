@@ -1,27 +1,27 @@
+// frontend/src/context/AuthContext.jsx
 import { createContext, useContext, useEffect } from "react";
-import { useAuth } from "@clerk/clerk-react";
+import { useAuth as useClerkAuth } from "@clerk/clerk-react";
 import api from "../services/api";
 
-const AuthContext = createContext();
-
+const AuthContext = createContext(null);
 
 export function AuthProvider({ children }) {
-    const { isSignedIn } = useAuth();
+  const { isLoaded, isSignedIn, userId, getToken } = useClerkAuth();
 
-    useEffect(() => {
-        if (!isSignedIn) return;
+  useEffect(() => {
+    const id = api.interceptors.request.use(async (config) => {
+      const token = await getToken();
+      if (token) config.headers.Authorization = `Bearer ${token}`;
+      return config;
+    });
+    return () => api.interceptors.request.eject(id); // avoid stacking duplicate interceptors on re-render
+  }, [getToken]);
 
-        api.post("/auth/sync").catch(console.error);
-
-    }, [isSignedIn]);
-
-    return (
-        <AuthContext.Provider value={{}}>
-            {children}
-        </AuthContext.Provider>
-    );
+  return (
+    <AuthContext.Provider value={{ isLoaded, isSignedIn, userId }}>
+      {children}
+    </AuthContext.Provider>
+  );
 }
 
-export function useAppAuth() {
-    return useContext(AuthContext);
-}
+export const useAuth = () => useContext(AuthContext);

@@ -3,7 +3,7 @@ import { getMessages, sendMessage } from "../services/chatService";
 import MessageBubble from "./MessageBubble";
 import { useAuth } from "@clerk/clerk-react";
 
-const ME = "Mohit"; // hardcoded until Clerk lands in Commit 14
+// const ME = "Mohit"; // hardcoded until Clerk lands in Commit 14
 
 export default function ChatBox({ room }) {
 const { userId } = useAuth();

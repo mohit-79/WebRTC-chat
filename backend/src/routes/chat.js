@@ -11,8 +11,8 @@ const {
 } = require("../middleware/clerkAuth");
 
 // router.post("/", createMessage); //before clerk
-router.get("/:room", requireAuth(), getMessages);
-router.post("/", requireAuth(), createMessage);
+router.get("/:room", requireAuth, getMessages);
+router.post("/", requireAuth, createMessage);
 
 
-module.exports = router;
+module.exports = router

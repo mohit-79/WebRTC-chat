@@ -3,17 +3,28 @@ const Message = require("../models/Message");
 // POST /chat
 const createMessage = async (req, res) => {
     try {
+        console.log("POST /chat reached");
+        // console.log("auth:", req.auth);
+        console.log("typeof auth:", typeof req.auth);
+
+if (typeof req.auth === "function") {
+    console.log("auth() =>", req.auth());
+}
+        console.log("body:", req.body);
 
         // const message = await Message.create(req.body); //before clerk auth
         const message = await Message.create({
 
-        sender: req.auth.userId,
+        sender: req.auth().userId,
 
         room: req.body.room,
 
         text: req.body.text
 
     });
+        console.log("POST /chat reached");
+        console.log("auth:", req.auth);
+        console.log("body:", req.body);
         
         res.status(201).json(message);//201 for created
 
@@ -54,7 +65,7 @@ const getMessages = async (req, res) => {
         res.json(messages);
 
     } catch (err) {
-
+        console.error(err);   // <-- add this
         res.status(500).json({
             error: err.message
         });
