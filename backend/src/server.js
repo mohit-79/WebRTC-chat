@@ -9,12 +9,15 @@ const chatRoutes = require("./routes/chat");
 const app = express();
 const { clerkMiddleware } = require("./middleware/clerkAuth");
 
+const authRoutes = require("./routes/auth");
+
 //middlewares before route-handlers
 app.use(cors());
 app.use(express.json());//stores parsed json in req.body
 app.use(clerkMiddleware());
 app.use("/chat", chatRoutes);
 app.get("/health", (req, res) => res.json({ ok: true }));
+app.use("/auth", authRoutes);
 app.post("/echo", (req, res) => {
     res.json({
         youSent: req.body

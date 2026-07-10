@@ -1,10 +1,13 @@
 import { useEffect, useState } from "react";
 import { getMessages, sendMessage } from "../services/chatService";
 import MessageBubble from "./MessageBubble";
+import { useAuth } from "@clerk/clerk-react";
 
 const ME = "Mohit"; // hardcoded until Clerk lands in Commit 14
 
 export default function ChatBox({ room }) {
+const { userId } = useAuth();
+//after clerk
   const [messages, setMessages] = useState([]);
   const [text, setText] = useState("");
 
@@ -17,7 +20,7 @@ export default function ChatBox({ room }) {
 
   const handleSend = async () => {
     if (!text.trim()) return;
-    await sendMessage({ sender: ME, room, text });
+    await sendMessage({ room, text }); //sender is decided by backend
     setText("");
     await loadMessages();
   };
@@ -31,7 +34,7 @@ export default function ChatBox({ room }) {
           <div className="text-center text-[#4A4A4A] mt-12">No messages yet — send the first one.</div>
         )}
         {messages.map((m) => (
-          <MessageBubble key={m._id} message={m} isSelf={m.sender === ME} />
+          <MessageBubble key={m._id} message={m} isSelf={m.sender === userId} />
         ))}
       </div>
 

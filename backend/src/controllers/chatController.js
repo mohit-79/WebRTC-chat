@@ -4,7 +4,16 @@ const Message = require("../models/Message");
 const createMessage = async (req, res) => {
     try {
 
-        const message = await Message.create(req.body);
+        // const message = await Message.create(req.body); //before clerk auth
+        const message = await Message.create({
+
+        sender: req.auth.userId,
+
+        room: req.body.room,
+
+        text: req.body.text
+
+    });
         
         res.status(201).json(message);//201 for created
 
